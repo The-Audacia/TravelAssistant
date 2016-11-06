@@ -56,6 +56,7 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Button picButton; //takes user to camera
 
+
     static final int REQUEST_IMAGE_CAPTURE_CODE = 1;
 
     private GoogleApiClient mGoogleApiClient;
@@ -65,7 +66,10 @@ public class MapsActivity extends FragmentActivity implements
     public LocationRequest mLocationRequest;
     public Location mCurrentLocation;
     public boolean mRequestingLocationUpdates = true;
-    private File HW2dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/camera");
+
+
+    private File HW2dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/check");
+
     private String HW2name = "Homework2.csv";
     public File Homework2 = new File(HW2dir,HW2name); // The Homework2.csv file is stored in DCIM/camera folder
 
@@ -82,6 +86,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        HW2dir.mkdir();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
@@ -98,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements
                 dispatchTakePictureIntent();
             }
         });
+
 
         if (!Homework2.exists()){
             try {
@@ -130,6 +136,7 @@ public class MapsActivity extends FragmentActivity implements
         createLocationRequest();
 
     }
+
 
     private Dialog MarkerInfoDialog(Marker marker) {
         mMarker = marker;
@@ -174,7 +181,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     //Start camera activity to take a photo
-    private  void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         File tempdir = null;
@@ -225,7 +232,7 @@ public class MapsActivity extends FragmentActivity implements
 
                             //save imageBitmap to storage
                             String imageFileName = "JPEG_" + timeStamp + "_.jpg";
-                            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera");
+                            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/check");
 
                             File image = new File(storageDir, imageFileName);
                             FileOutputStream out = new FileOutputStream(image);

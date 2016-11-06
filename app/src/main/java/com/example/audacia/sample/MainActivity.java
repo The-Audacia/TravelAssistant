@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import net.daum.android.map.MapActivity;
+
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,17 +27,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //카메라관련 코드 시작2
-        // Check if anything in savedInstanceState Bundle.
-        // If so, Activity is being recreated after screen orientation change,
-        //   so get saved information from Bundle.
-        if (savedInstanceState != null) {
-            photoName = savedInstanceState.getString(KEY_PHOTO_PATH);
-        }
-        //카메라관련 코드 끝2
-
         setContentView(R.layout.activity_main);
 
+        btn_secondPage = (Button)findViewById(R.id.btn_start);
         findViewById(R.id.btn_start).setOnClickListener(mBtnSecondPage);
 
         dialog_popup = new DialogPopup(MainActivity.this);
@@ -44,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
         dialog_popup.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                Intent intent = new Intent(MainActivity.this, Camera_Finish.class);
-                intent.putExtra("travelName", dialog_popup.getTravelName());
+
+                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                //intent.putExtra("travelName", dialog_popup.getTravelName());
                 startActivity(intent);
                 Toast.makeText(getApplicationContext(), "여행지 이름을 입력하였습니다", Toast.LENGTH_SHORT).show();
             }
@@ -59,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.bottom2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+            }
+        });
+
+        findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, MapsActivity.class));

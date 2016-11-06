@@ -12,31 +12,40 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="50dp"
         android:id="@+id/photobutton"
         android:text="Take a picture"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:id="@+id/finishbutton"
+        android:background="#ff0000"
+        android:text="Finish"/>
 
     <TextView
         android:layout_width="75dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="110dp"
         android:id="@+id/displaylongitude"
-        android:layout_gravity="right|bottom" />
-    <TextView
-        android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="75dp"
-        android:layout_marginBottom="50dp"
-        android:id="@+id/displaylatitude"
-        android:layout_gravity="right|bottom"/>
+        android:layout_gravity="left|top" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/yourlocation"
-        android:layout_gravity="right|bottom"
+        android:layout_gravity="left|top"
         android:text="Your Location is:"
-        android:layout_marginRight="150dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginTop="30dp"
         />
+
+    <TextView
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="30dp"
+        android:id="@+id/displaylatitude"
+        android:layout_gravity="left|top"/>
 
 </FrameLayout>
