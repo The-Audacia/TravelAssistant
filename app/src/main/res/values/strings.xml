@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sample</string>
+    <string name="app_name">Travel Photo Album</string>
 
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
         AIzaSyDi8ybyNgsi98hA6F7lWP8C2epOI9K3lhU

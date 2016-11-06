@@ -48,8 +48,7 @@ import java.util.Date;
 //import android.location.LocationListener;
 
 public class MapsActivity extends FragmentActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener
-{
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     public static final String TAG = "MapsActivity";
     public static final int THUMBNAIL = 1;
 
@@ -67,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements
     public boolean mRequestingLocationUpdates = true;
     private File HW2dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/camera");
     private String HW2name = "Homework2.csv";
-    public File Homework2 = new File(HW2dir,HW2name); // The Homework2.csv file is stored in DCIM/camera folder
+    public File Homework2 = new File(HW2dir, HW2name); // The Homework2.csv file is stored in DCIM/camera folder
 
     private TextView displaylatitude;
     private TextView displaylongitude;
@@ -99,14 +98,14 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
-        if (!Homework2.exists()){
+        if (!Homework2.exists()) {
             try {
                 Homework2.createNewFile();
-                BufferedWriter bfw = new BufferedWriter(new FileWriter(Homework2,true));
+                BufferedWriter bfw = new BufferedWriter(new FileWriter(Homework2, true));
                 bfw.write("TimeStamp,Latitude,Longitude\n");
                 bfw.close();
-            } catch (IOException e){
-                Log.d("MapsActivity","Homework2.csv file failed to create");
+            } catch (IOException e) {
+                Log.d("MapsActivity", "Homework2.csv file failed to create");
                 e.printStackTrace();
             }
         }
@@ -143,7 +142,7 @@ public class MapsActivity extends FragmentActivity implements
 
         builder.setTitle("Marker Info editor")
                 .setCancelable(true)
-                .setView(inflater.inflate(R.layout.edit_markerinfo,null))
+                .setView(inflater.inflate(R.layout.edit_markerinfo, null))
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -174,11 +173,11 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     //Start camera activity to take a photo
-    private  void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         File tempdir = null;
-        if (takePictureIntent.resolveActivity(getPackageManager())!=null){
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             /*
             try {
                 tempdir = createImageFile();
@@ -195,12 +194,12 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     //do Writing CSV file for homework 2
-    protected void onActivityResult (int requestCode, int resultCode, Intent data)  {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         //super.onActivityResult(requestCode,resultCode,data);
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE_CODE){
-            if (resultCode == RESULT_OK ){
+        if (requestCode == REQUEST_IMAGE_CAPTURE_CODE) {
+            if (resultCode == RESULT_OK) {
                 // photo is captured, save timestamp and the last available coordinate data to the CSV file
                 if (mCurrentLocation != null) {
                     double latitude = mCurrentLocation.getLatitude();
@@ -234,34 +233,58 @@ public class MapsActivity extends FragmentActivity implements
                             out.close();
 
                             mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude))
-                                            .icon(BitmapDescriptorFactory.fromBitmap(imageBitmap))
+                                    .icon(BitmapDescriptorFactory.fromBitmap(imageBitmap))
                             );
-
-                        } catch (IOException e){
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }
 
-            }else if  (resultCode == RESULT_CANCELED){
+            } else if (resultCode == RESULT_CANCELED) {
                 // User cancelled the image capture
-            }else {
+            } else {
                 // Image capture failed, make some advices for the user
             }
         }
     }
-
+/*
+    private void drawLine() {
+        PolylineOptions rectOptions = new PolylineOptions();
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera");
+        Log.v("drawLine", "파일 리스트 전에");
+        File[] fileList = storageDir.listFiles();
+        Log.v("drawLine", "파일 리스트 후에");
+        for(int i = 0; i < fileList.length; i++) {
+            JPGFileFilter jpgFileFilter = new JPGFileFilter();
+            if(!jpgFileFilter.accept(storageDir, fileList[i].getName())) {
+                continue;
+            }
+            try {
+                Log.v("drawLine", "포문 들어와서");
+                Log.v("drawLine", fileList[i].getName());
+                ExifInterface exif = new ExifInterface(storageDir.getAbsolutePath() + File.separator + fileList[i].getName());
+                LatLng loc = new LatLng(Double.parseDouble(exif.getAttribute(TAG_GPS_LATITUDE)),
+                        Double.parseDouble(exif.getAttribute(TAG_GPS_LONGITUDE)));
+                rectOptions.add(loc);
+            } catch(IOException e) {
+                Toast.makeText(getApplicationContext(), "sibal", Toast.LENGTH_SHORT).show();
+            }
+        }
+        Polyline polyline = mMap.addPolyline(rectOptions);
+    }
+*/
     //Connect with the GoogleApiClient
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-        .addConnectionCallbacks(this)
-        .addOnConnectionFailedListener(this)
-        .addApi(LocationServices.API)
-        .build();
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     //Create locationrequest
-    protected void createLocationRequest(){
+    protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(5000);
         mLocationRequest.setFastestInterval(2000);
@@ -270,7 +293,7 @@ public class MapsActivity extends FragmentActivity implements
 
     //Get last known location & start location updates
     @Override
-    public void onConnected(Bundle bundle){
+    public void onConnected(Bundle bundle) {
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (mLastLocation != null) {
@@ -278,7 +301,7 @@ public class MapsActivity extends FragmentActivity implements
             mLongitude = mLastLocation.getLongitude();
         }
 
-        if (mRequestingLocationUpdates){
+        if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
 
@@ -292,24 +315,24 @@ public class MapsActivity extends FragmentActivity implements
 
     //stopLocationUpdates in onPause()
     protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this);
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         mRequestingLocationUpdates = true;
     }
 
     @Override
-    public void onLocationChanged (Location location){
+    public void onLocationChanged(Location location) {
 
         mCurrentLocation = location;
 
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 
-        displaylatitude.setText(String.format("%.5f",latitude));
-        displaylongitude.setText(String.format("%.5f",longitude));
+        displaylatitude.setText(String.format("%.5f", latitude));
+        displaylongitude.setText(String.format("%.5f", longitude));
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         stopLocationUpdates();
         mGoogleApiClient.disconnect();
@@ -358,43 +381,52 @@ public class MapsActivity extends FragmentActivity implements
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker( new MarkerOptions()
-                        .position(new LatLng(20, 20))
-                        .title("EECS397/600"));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(20, 20))
+                .title("EECS397/600"));
 
         InputStream in = null;
         try {
             in = new BufferedInputStream(new FileInputStream(Homework2)); // get Homework2 file
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
             String currentLine = reader.readLine();
-            if (reader.readLine() != null) currentLine = reader.readLine(); // Skip to 2nd line because first line is header info
+            if (reader.readLine() != null)
+                currentLine = reader.readLine(); // Skip to 2nd line because first line is header info
             while (currentLine != null) // Loop through all lines in CSV file if it exists
             {
                 String[] values = currentLine.split(","); // Split line by commas, giving three values: TIMESTAP, LAT, LONG
-                String filepath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM +"/Camera").getAbsolutePath() + "/JPEG_" + values[0] +"_.jpg"; // Get filepath of current JPG
-                Log.d("MarkerCreate", "Filepath for next marker is " +filepath);
-                mMap.addMarker( new MarkerOptions()
-                                .position(new LatLng(Double.parseDouble(values[1]), Double.parseDouble(values[2]))) // Get Latitude and Longitude values
-                                .icon(BitmapDescriptorFactory.fromPath(filepath)) // filepath
+                String filepath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera").getAbsolutePath() + "/JPEG_" + values[0] + "_.jpg"; // Get filepath of current JPG
+                Log.d("MarkerCreate", "Filepath for next marker is " + filepath);
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(Double.parseDouble(values[1]), Double.parseDouble(values[2]))) // Get Latitude and Longitude values
+                        .icon(BitmapDescriptorFactory.fromPath(filepath)) // filepath
                 );
-                Log.d("MarkerCreate", "Created Marker with timestamp" + values[0] +"and LatLng" +values[1] +"," +values[2]);
+                Log.d("MarkerCreate", "Created Marker with timestamp" + values[0] + "and LatLng" + values[1] + "," + values[2]);
                 currentLine = reader.readLine(); // Go to next line
             }
-        }
-        catch (Exception FileNotFoundException){
+        } catch (Exception FileNotFoundException) {
             Log.e("FileOpen", "File Not Found Exception while creating markers");
         }
     }
 
     //must implement abstract method onConnectionFailed()
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult){
+    public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
 
     //must implement abstract method onConnectionSuspended()
     @Override
-    public void onConnectionSuspended(int i){
+    public void onConnectionSuspended(int i) {
 
     }
 }
+/*
+class JPGFileFilter implements FilenameFilter
+{
+    @Override
+    public boolean accept(File file, String s) {
+        return s.toLowerCase().endsWith(".jpg");
+    }
+}
+*/
