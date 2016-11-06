@@ -1,19 +1,18 @@
 package com.example.audacia.sample;
 
 import android.app.Dialog;
-import android.os.Bundle;
-import android.view.View.OnTouchListener;
 import android.content.Context;
-import android.view.*;
-import android.widget.*;
+import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 
+public class Finish_Dialogpopup extends Dialog implements View.OnTouchListener {
 
-public class DialogPopup extends Dialog implements OnTouchListener {
-    private EditText travelName;
     private Button addOK, addCancel;
-    private String _travelName;
 
-    public DialogPopup(Context context){
+
+    public Finish_Dialogpopup(Context context){
         super(context);
     }
 
@@ -22,7 +21,6 @@ public class DialogPopup extends Dialog implements OnTouchListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish__dialogpopup);
 
-        travelName = (EditText)findViewById(R.id.travelName);
         addOK = (Button)findViewById(R.id.addOK);
         addCancel = (Button)findViewById(R.id.addCancel);
 
@@ -30,13 +28,9 @@ public class DialogPopup extends Dialog implements OnTouchListener {
         addCancel.setOnTouchListener(this);
     }
 
-    public String getTravelName(){
-        return _travelName;
-    }
 
     public boolean onTouch(View v, MotionEvent event){
         if(v == addOK){
-            _travelName = travelName.getText().toString();
             dismiss();
         }
         else if(v == addCancel)
@@ -46,11 +40,3 @@ public class DialogPopup extends Dialog implements OnTouchListener {
     }
 
 }
-
-
-
-
-
-
-
-

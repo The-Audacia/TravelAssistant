@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -56,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Button picButton; //takes user to camera
 
+
     static final int REQUEST_IMAGE_CAPTURE_CODE = 1;
 
     private GoogleApiClient mGoogleApiClient;
@@ -65,7 +68,10 @@ public class MapsActivity extends FragmentActivity implements
     public LocationRequest mLocationRequest;
     public Location mCurrentLocation;
     public boolean mRequestingLocationUpdates = true;
-    private File HW2dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/camera");
+
+
+    private File HW2dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/check");
+
     private String HW2name = "Homework2.csv";
     public File Homework2 = new File(HW2dir,HW2name); // The Homework2.csv file is stored in DCIM/camera folder
 
@@ -80,8 +86,12 @@ public class MapsActivity extends FragmentActivity implements
     public String mSnippet = "Edit Snippet";
     public Marker mMarker;
 
+    Button button_finish;
+    Finish_Dialogpopup finish_dialogpopup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        HW2dir.mkdir();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
@@ -91,6 +101,29 @@ public class MapsActivity extends FragmentActivity implements
         displaylatitude = (TextView) findViewById(R.id.displaylatitude);
         displaylongitude = (TextView) findViewById(R.id.displaylongitude);
 
+        button_finish = (Button)findViewById(R.id.finishbutton);
+        findViewById(R.id.finishbutton).setOnClickListener(mBtnFinish);
+
+        finish_dialogpopup = new Finish_Dialogpopup(MapsActivity.this);
+        finish_dialogpopup.setTitle("여행끝"); //다이얼로그 타이틀 설정
+
+        finish_dialogpopup.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+
+                Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        finish_dialogpopup.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+
+            }
+        });
+
+
 
         picButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +131,7 @@ public class MapsActivity extends FragmentActivity implements
                 dispatchTakePictureIntent();
             }
         });
+
 
         if (!Homework2.exists()){
             try {
@@ -130,6 +164,14 @@ public class MapsActivity extends FragmentActivity implements
         createLocationRequest();
 
     }
+
+    Button.OnClickListener mBtnFinish = new Button.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish_dialogpopup.show();
+        }
+    };
+
 
     private Dialog MarkerInfoDialog(Marker marker) {
         mMarker = marker;
@@ -174,7 +216,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     //Start camera activity to take a photo
-    private  void dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         File tempdir = null;
@@ -225,7 +267,7 @@ public class MapsActivity extends FragmentActivity implements
 
                             //save imageBitmap to storage
                             String imageFileName = "JPEG_" + timeStamp + "_.jpg";
-                            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/Camera");
+                            File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM + "/check");
 
                             File image = new File(storageDir, imageFileName);
                             FileOutputStream out = new FileOutputStream(image);
@@ -358,9 +400,7 @@ public class MapsActivity extends FragmentActivity implements
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker( new MarkerOptions()
-                        .position(new LatLng(20, 20))
-                        .title("EECS397/600"));
+        PolylineOptions rectOptions = new PolylineOptions();
 
         InputStream in = null;
         try {
@@ -371,12 +411,13 @@ public class MapsActivity extends FragmentActivity implements
             while (currentLine != null) // Loop through all lines in CSV file if it exists
             {
                 String[] values = currentLine.split(","); // Split line by commas, giving three values: TIMESTAP, LAT, LONG
-                String filepath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM +"/Camera").getAbsolutePath() + "/JPEG_" + values[0] +"_.jpg"; // Get filepath of current JPG
+                String filepath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM +"/check").getAbsolutePath() + "/JPEG_" + values[0] +"_.jpg"; // Get filepath of current JPG
                 Log.d("MarkerCreate", "Filepath for next marker is " +filepath);
                 mMap.addMarker( new MarkerOptions()
                                 .position(new LatLng(Double.parseDouble(values[1]), Double.parseDouble(values[2]))) // Get Latitude and Longitude values
                                 .icon(BitmapDescriptorFactory.fromPath(filepath)) // filepath
                 );
+                rectOptions.add(new LatLng(Double.parseDouble(values[1]), Double.parseDouble(values[2])));
                 Log.d("MarkerCreate", "Created Marker with timestamp" + values[0] +"and LatLng" +values[1] +"," +values[2]);
                 currentLine = reader.readLine(); // Go to next line
             }
@@ -384,6 +425,10 @@ public class MapsActivity extends FragmentActivity implements
         catch (Exception FileNotFoundException){
             Log.e("FileOpen", "File Not Found Exception while creating markers");
         }
+        rectOptions.width(30)
+                .color(Color.argb(70, 47, 79, 79))
+                .geodesic(true);
+        mMap.addPolyline(rectOptions);
     }
 
     //must implement abstract method onConnectionFailed()
