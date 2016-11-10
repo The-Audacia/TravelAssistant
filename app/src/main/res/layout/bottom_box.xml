@@ -60,6 +60,7 @@
                 android:background="@drawable/ic_menu_black_24dp" />
         </RelativeLayout>
 
+        <!--
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -74,5 +75,6 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/ic_settings_black_24dp" />
         </RelativeLayout>
+        -->
     </LinearLayout>
 </LinearLayout>

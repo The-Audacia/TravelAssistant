@@ -34,11 +34,13 @@ public class TravelListView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
 
-        homeItems.add(new HomeItem("부산 여행"));
-        homeItems.add(new HomeItem("서울 여행"));
-        homeItems.add(new HomeItem("속초 여행"));
-        homeItems.add(new HomeItem("대구 여행"));
-        homeItems.add(new HomeItem("광주 여행"));
+        homeItems.add(new HomeItem("San Francisco, US"));
+        homeItems.add(new HomeItem("Seoul, Korea"));
+        homeItems.add(new HomeItem("New York, US"));
+        homeItems.add(new HomeItem("London, UK"));
+        homeItems.add(new HomeItem("Tyoko, Japan"));
+        homeItems.add(new HomeItem("Hong Kong, China"));
+        homeItems.add(new HomeItem("Massachusetts, US"));
 
         listView = (ListView) findViewById(R.id.listView);
         inputText = (EditText) findViewById(R.id.inputText);
@@ -83,21 +85,15 @@ public class TravelListView extends Activity {
                 TextView item_text = (TextView) v.findViewById(R.id.item_text); //텍스트뷰 찾기
                 item_text.setText(item.getItemText());
                 ImageView item_img = (ImageView) v.findViewById(R.id.item_img); //이미지뷰 찾기
-                switch (i % 5) { //순환하면서 색이 변하도록 조건문 작성
+                switch (i % 3) { //순환하면서 색이 변하도록 조건문 작성
                     case 0:
-                        item_img.setBackgroundColor(Color.BLACK);
+                        item_img.setBackgroundColor(Color.GRAY);
                         break;
                     case 1:
-                        item_img.setBackgroundColor(Color.YELLOW);
+                        item_img.setBackgroundColor(Color.LTGRAY);
                         break;
                     case 2:
-                        item_img.setBackgroundColor(Color.GREEN);
-                        break;
-                    case 3:
-                        item_img.setBackgroundColor(Color.BLUE);
-                        break;
-                    case 4:
-                        item_img.setBackgroundColor(Color.RED);
+                        item_img.setBackgroundColor(Color.BLACK);
                         break;
                 }
             }

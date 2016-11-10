@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -30,8 +31,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".Camera_Finish"></activity>
-        <activity android:name=".MapsActivity"></activity>
+        <activity android:name=".Camera_Finish" />
+        <activity android:name=".MapsActivity" />
+        <activity android:name=".TravelListView" />
+        <activity android:name=".TravelName" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -42,7 +45,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
-
     </application>
 
 </manifest>

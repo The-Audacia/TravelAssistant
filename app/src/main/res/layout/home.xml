@@ -3,14 +3,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/PrimaryText"
+    >
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:divider="#ff0000"
+        android:divider="@color/AccentColor"
         android:dividerHeight="1dp" />
 
     <LinearLayout

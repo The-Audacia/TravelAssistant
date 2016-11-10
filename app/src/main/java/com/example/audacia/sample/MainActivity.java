@@ -1,19 +1,14 @@
 package com.example.audacia.sample;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-
-    // Daum map api key
-    static final String API_KEY = "847e6978474f073d697d46982b459a1f";
 
     Button btn_secondPage;
     DialogPopup dialog_popup;
@@ -24,39 +19,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //카메라관련 코드 시작2
-        // Check if anything in savedInstanceState Bundle.
-        // If so, Activity is being recreated after screen orientation change,
-        //   so get saved information from Bundle.
-        if (savedInstanceState != null) {
-            photoName = savedInstanceState.getString(KEY_PHOTO_PATH);
-        }
-        //카메라관련 코드 끝2
-
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.btn_start).setOnClickListener(mBtnSecondPage);
-
-        dialog_popup = new DialogPopup(MainActivity.this);
-        dialog_popup.setTitle("여행명 입력"); //다이얼로그 타이틀 설정
-
-        dialog_popup.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                Intent intent = new Intent(MainActivity.this, Camera_Finish.class);
-                intent.putExtra("travelName", dialog_popup.getTravelName());
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "여행지 이름을 입력하였습니다", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        dialog_popup.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                Toast.makeText(getApplicationContext(), "입력을 취소하였습니다.", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        btn_secondPage = (Button)findViewById(R.id.btn_start);
+//        findViewById(R.id.btn_start).setOnClickListener(mBtnSecondPage);
+//
+//        dialog_popup = new DialogPopup(MainActivity.this);
+//        dialog_popup.setTitle("여행명 입력"); //다이얼로그 타이틀 설정
+//
+//        dialog_popup.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialogInterface) {
+//
+//                Intent intent = new Intent(MainActivity.this, MapActivity.class);
+//                //intent.putExtra("travelName", dialog_popup.getTravelName());
+//                startActivity(intent);
+//                Toast.makeText(getApplicationContext(), "여행지 이름을 입력하였습니다", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//        dialog_popup.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialogInterface) {
+//                Toast.makeText(getApplicationContext(), "입력을 취소하였습니다.", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         findViewById(R.id.bottom2).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,13 +51,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, MapsActivity.class));
             }
         });
+
+        findViewById(R.id.btn_start).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, MapsActivity.class));
+            }
+        });
+        findViewById(R.id.bottom4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, TravelListView.class));
+            }
+        });
     }
 
-    Button.OnClickListener mBtnSecondPage = new Button.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            dialog_popup.show();
-        }
-    };
+//    Button.OnClickListener mBtnSecondPage = new Button.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            dialog_popup.show();
+//        }
+//    };
 
 }
